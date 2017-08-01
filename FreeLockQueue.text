@@ -1,0 +1,67 @@
+/**
+ * free lock queue
+ */
+template <typename T>
+class FreeLockQueue
+{
+public:
+    FreeLockQueue()
+    {
+        nSize = 0;
+        T* unit = NULL;
+        fifolist.push_back(unit);
+        pHeader = fifolist.begin();
+        pEnd = fifolist.end();
+    }
+
+    FreeLockQueue(const FreeLockQueue& orig)
+    {
+
+    }
+
+    virtual ~FreeLockQueue()
+    {
+
+    }
+
+    void push_back(T* p)
+    {
+
+        fifolist.push_back(p);
+        pEnd = fifolist.end();
+
+        fifolist.erase(fifolist.begin(),pHeader);
+    }
+
+    T* front()
+    {
+
+        typename std::list<T*>::iterator iptr = pHeader;
+        ++iptr;
+        if(iptr!=pEnd)
+        {
+            pHeader = iptr;
+            return (*pHeader);
+        }
+        return 0;
+    }
+
+    //返回true为空，返回false为非空
+    bool isEmpty()
+    {
+        typename std::list<T*>::iterator iptr = pHeader;
+        ++iptr;
+        if(iptr!=pEnd)
+        {
+            return false;
+        }
+        return true;
+    }
+
+private:
+    std::list<T*> fifolist;
+    typename std::list<T*>::iterator pEnd,pHeader;
+    int nSize;
+
+};
+
